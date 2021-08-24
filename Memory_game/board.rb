@@ -1,4 +1,4 @@
-require "card.rb"
+require_relative "card"
 
 class Board 
     def initialize(n=4)
@@ -19,43 +19,54 @@ class Board
             end
         end
     end
+    def [](position)
+        row, col = position
+        @secret_grid[row][col]
+    end
 
-    # def [](position)
-    #     row, col = position
-    #     @secret_grid[row][col]
-    # end
+    def []=(position, value)
+        row, col = position
+        @secret_grid[row][col] = value
+    end
+    def check(position)
 
-    # def []=(position, value)
-    #     row, col = position
-    #     @secret_grid[row][col] = value
-    # end
+    end
 
-    # def render
-    #     temp = @secret_grid.map.with_index do |sub_arr, i1|
-    #         sub_arr.map.with_index do |card, i2|
-    #             if !card.hidden
-    #                 Card.face_value
-    #             else
-    #                 "x"
-    #             end
-    #         end
-    #     end
-    #     temp
-    # end
+
+    def render
+        temp = @secret_grid.map.with_index do |sub_arr, i1|
+            sub_arr.map.with_index do |card, i2|
+                if !Card.new(@secret_grid[i1][i2]).check
+                    Card.face_value
+                else
+                    "x"
+                end
+            end
+        end
+        temp
+    end
             
-    #     # iterate through @grid, and print "" for @hidden, letter for !@hidden
+        # iterate through @grid, and print "" for @hidden, letter for !@hidden
 
 
-    # def won?
-    #     @secret_grid.each do |sub_arr|
-    #         sub_arr.each do |card|
-    #             if card.check
-    #                 return false
-    #             end
-    #         end
-    #     end
-    #     true
-    # end
+    def won?
+        @secret_grid.each do |sub_arr|
+            sub_arr.each do |card|
+                if card.check
+                    return false
+                end
+            end
+        end
+        true
+    end
+
+    def reveal(guessed_pos)
+        row, col = guessed_pos
+        if Card.check
+            Card.reveal
+        end
+    end
+
 
     # def reveal(guessed_pos)
     #     row, col = guessed_pos
@@ -64,10 +75,10 @@ class Board
     #     end
     # end
 
-    # def hide(position)
-    #     row, col = position
-    #     @secret_grid[row][col].hide
-    # end
+    def hide(position)
+        row, col = position
+        @secret_grid[row][col].hide
+    end
 
 end
 

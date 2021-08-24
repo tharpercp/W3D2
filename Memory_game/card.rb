@@ -1,5 +1,3 @@
-require_relative "board"
-
 
 class Card 
     def initialize(face_value, hidden=true)
@@ -25,7 +23,7 @@ class Card
     def ==(guess)
         guess == @face_value
     end
-    
+end
 
 
             
